@@ -12,78 +12,63 @@ public class PhoneBook {
 		if (contactLinkedList.empty()) {
 			contactLinkedList.insert(contact);
 			System.out.println("the CONTACT has been Added successfully!");
+			return;
 		} else {
 			if (checkUnique(contact)) {
 				contactLinkedList.insert(contact);
 				System.out.println("the CONTACT has been Added successfully!");
+				return;
 			}
 		}
-		/* Big o n */
+		System.out.println("THE PhoneNumber already exists!");
 	}
 
 	private boolean checkUnique(Contact n) {
 		contactLinkedList.findfirst();
-		while (!contactLinkedList.last()) {
-			if (contactLinkedList.retrieve().getPhoneNumber().equalsIgnoreCase(n.getPhoneNumber())
-					|| contactLinkedList.retrieve().getContactName().equalsIgnoreCase(n.getContactName())) {
+		boolean Signal = true;
+		while (Signal) {
+			if (contactLinkedList.retrieve().getPhoneNumber().equalsIgnoreCase(n.getPhoneNumber())) {
 				return false;
+			}
+			if (contactLinkedList.last()) {
+				Signal = false;
+				break;
 			}
 			contactLinkedList.findnext();
-			if (contactLinkedList.last()
-					&& (contactLinkedList.retrieve().getPhoneNumber().equalsIgnoreCase(n.getPhoneNumber())
-							|| contactLinkedList.retrieve().getContactName().equalsIgnoreCase(n.getContactName()))) {
-				return false;
-			}
 		}
 
 		return true;
 	}
 
-	public void searchContact(String data, String type) {
-		int nb = 1;
-		Contact tmp = findContact(data, type);
-		if (tmp != null) {
-			if (type.equalsIgnoreCase("Email") || type.equalsIgnoreCase("birthday")
-					|| type.equalsIgnoreCase("Address")) {
-				contactLinkedList.findfirst();
-				while (!contactLinkedList.last()) {
-					if (tmp != null && tmp.getType(type).equalsIgnoreCase(contactLinkedList.retrieve().getType(type))) {
-						System.out.println("\nContact " + nb + " found!");
-						System.out.println("Name: " + contactLinkedList.retrieve().getContactName());
-						System.out.println("Phone Number: " + contactLinkedList.retrieve().getPhoneNumber());
-						System.out.println("Email Address: " + contactLinkedList.retrieve().getEmailAddress());
-						System.out.println("Address: " + contactLinkedList.retrieve().getAddress());
-						System.out.println("Birthday " + contactLinkedList.retrieve().getBirthday());
-						System.out.println("Notes: " + contactLinkedList.retrieve().getNotes());
-						System.out.println("----------------------------------------------");
-						nb++;
-					}
-					contactLinkedList.findnext();
-				}
-
-				if (tmp.getType(type).equalsIgnoreCase(contactLinkedList.retrieve().getType(type))
-						&& contactLinkedList.last()) {
-					System.out.println("\nContact " + nb + " found!");
-					System.out.println("Name: " + contactLinkedList.retrieve().getContactName());
-					System.out.println("Phone Number: " + contactLinkedList.retrieve().getPhoneNumber());
-					System.out.println("Email Address: " + contactLinkedList.retrieve().getEmailAddress());
-					System.out.println("Address: " + contactLinkedList.retrieve().getAddress());
-					System.out.println("Birthday " + contactLinkedList.retrieve().getBirthday());
-					System.out.println("Notes: " + contactLinkedList.retrieve().getNotes());
-					System.out.println("----------------------------------------------");
-				}
-			} else {
-				System.out.println("\nContact found!");
-				System.out.println("Name: " + tmp.getContactName());
-				System.out.println("Phone Number: " + tmp.getPhoneNumber());
-				System.out.println("Email Address: " + tmp.getEmailAddress());
-				System.out.println("Address: " + tmp.getAddress());
-				System.out.println("Birthday " + tmp.getBirthday());
-				System.out.println("Notes: " + tmp.getNotes());
-			}
-		} else {
-			System.out.println("CONTACT NOT FOUND!");
+	public void deleteContact(String c) {
+		if (contactLinkedList.empty()) {
+			System.out.println("The List is empty!");
+			return;
 		}
+		Contact tmp = findContact(c, "PhoneNumber");
+		if (tmp == null) {
+			System.out.println("The contact not exist!");
+		}
+		if (!EventLinkedList.empty()) {
+			EventLinkedList.findfirst();
+			boolean Signal = true;
+			while (Signal) {
+				if (EventLinkedList.retrieve().findContactInEvent(c, "PhoneNumber") != null) {
+					EventLinkedList.retrieve().removeContactInEvent();
+				}
+				if (EventLinkedList.retrieve().isEmptyContact()) {
+					EventLinkedList.remove();
+				}
+				if (EventLinkedList.last()) {
+					Signal = false;
+					break;
+				}
+				EventLinkedList.findnext();
+			}
+		}
+
+		contactLinkedList.remove();
+		System.out.println("THE CONTACT HAS BEEN DELETED");
 	}
 
 	public Contact findContact(String data, String type) {
@@ -91,9 +76,10 @@ public class PhoneBook {
 		if (contactLinkedList.empty()) {
 			return null;
 		}
-		boolean last = false;
+		boolean Signal = true;
+		;
 
-		do {
+		while (Signal) {
 			Contact currentContact = contactLinkedList.retrieve();
 			if (currentContact != null) {
 				if (type.equalsIgnoreCase("Name") && currentContact.getContactName().equalsIgnoreCase(data)) {
@@ -109,16 +95,46 @@ public class PhoneBook {
 					return currentContact;
 				}
 			}
-			if (last == true) {
-				return null;
+			if (contactLinkedList.last()) {
+				Signal = false;
+				break;
 			}
 			contactLinkedList.findnext();
-			if (contactLinkedList.last()) {
-				last = true;
-			}
-		} while (!contactLinkedList.last() || last == true);
+
+		}
 
 		return null;
+	}
+
+	public void searchContact(String data, String type) {
+		int nb = 1;
+		Contact tmp = findContact(data, type);
+		if (tmp != null) {
+			if (type.equalsIgnoreCase("Email") || type.equalsIgnoreCase("birthday")
+					|| type.equalsIgnoreCase("Address")) {
+				contactLinkedList.findfirst();
+				boolean Signal = true;
+				while (Signal) {
+					if (tmp != null && tmp.getType(type).equalsIgnoreCase(contactLinkedList.retrieve().getType(type))) {
+						System.out.println("\nContact " + nb + " found!");
+						System.out.println(contactLinkedList.retrieve().toString());
+						nb++;
+					}
+					if (contactLinkedList.last()) {
+						Signal = false;
+						break;
+					}
+					contactLinkedList.findnext();
+				}
+
+			} else {
+				System.out.println("\nContact found!");
+				System.out.println(tmp.toString());
+				;
+			}
+		} else {
+			System.out.println("CONTACT NOT FOUND!");
+		}
 	}
 
 	public void scheduleEvent(Event event, Contact a) {
@@ -134,11 +150,11 @@ public class PhoneBook {
 		} else {
 
 			if (findEvent(event)) {
-				EventLinkedList.retrieve().addContact(a);
+				EventLinkedList.retrieve().addContacttoEvent(a);
 				System.out.println("The event has been schudlede!");
 				return;
 			} else {
-				event.addContact(a);
+				event.addContacttoEvent(a);
 				EventLinkedList.insert(event);
 				System.out.println("The event has been schudlede!");
 			}
@@ -147,24 +163,20 @@ public class PhoneBook {
 	}
 
 	private boolean conflictDate(Contact contact, String DateAndTime) {
-		String stmp = contact.getPhoneNumber();
+		String tmp = contact.getPhoneNumber();
 		if (EventLinkedList.empty()) {
 			return false;
 		} else {
 			EventLinkedList.findfirst();
-			while (!EventLinkedList.last()) {
-				if (EventLinkedList.retrieve().findContact(stmp, "PhoneNumber") != null
+			boolean Signal = true;
+			while (Signal) {
+				if (EventLinkedList.retrieve().findContactInEvent(tmp, "PhoneNumber") != null
 						&& EventLinkedList.retrieve().getDateAndTime().equalsIgnoreCase(DateAndTime)) {
 					return true;
 				}
+				if (EventLinkedList.last())
+					break;
 				EventLinkedList.findnext();
-			}
-			if (EventLinkedList.last()) {
-
-				if (EventLinkedList.retrieve().findContact(stmp, "PhoneNumber") != null
-						&& EventLinkedList.retrieve().getDateAndTime().equalsIgnoreCase(DateAndTime)) {
-					return true;
-				}
 			}
 		}
 		return false;
@@ -175,17 +187,20 @@ public class PhoneBook {
 		if (EventLinkedList.empty())
 			return false;
 		EventLinkedList.findfirst();
-		while (!EventLinkedList.last()) {
+		boolean Signal = true;
+		while (Signal) {
 			Event tmp = EventLinkedList.retrieve();
 			if (tmp.getEventTitle().equalsIgnoreCase(a.getEventTitle())
-					&& tmp.getDateAndTime().equalsIgnoreCase(a.getDateAndTime()))
+					&& tmp.getDateAndTime().equalsIgnoreCase(a.getDateAndTime())
+					&& tmp.getLocation().equalsIgnoreCase(a.getLocation()))
 				return true;
+			if (EventLinkedList.last()) {
+				Signal = false;
+				break;
+			}
 
 			EventLinkedList.findnext();
 		}
-		if (EventLinkedList.last() && EventLinkedList.retrieve().getEventTitle().equalsIgnoreCase(a.getEventTitle())
-				&& EventLinkedList.retrieve().getDateAndTime().equalsIgnoreCase(a.getDateAndTime()))
-			return true;
 
 		return false;
 	}
@@ -218,15 +233,16 @@ public class PhoneBook {
 
 				System.out.println("Event found!\n");
 				System.out.println("Event title: " + tmp.getEventTitle());
-				tmp.contactsNames();
+				tmp.printContactsNames();
 				System.out.println("Event date and time: " + tmp.getDateAndTime());
 				System.out.println("Event Location: " + tmp.getLocation());
 				return;
 
-			} else if (EventLinkedList.retrieve().findContact(data, "Name") != null && Type.equalsIgnoreCase("Name")) {
+			} else if (EventLinkedList.retrieve().findContactInEvent(data, "Name") != null
+					&& Type.equalsIgnoreCase("Name")) {
 				System.out.println("\nEvent found!\n");
 				System.out.println("Event title: " + tmp.getEventTitle());
-				tmp.contactsNames();
+				tmp.printContactsNames();
 				System.out.println("Event date and time: " + tmp.getDateAndTime());
 				System.out.println("Event Location: " + tmp.getLocation());
 			}
@@ -236,64 +252,8 @@ public class PhoneBook {
 				return;
 			}
 			EventLinkedList.findnext();
-
 		} while (Signal);
-		System.out.println("Event not found! ");
-
-	}
-
-	public void deleteContact(String c) {
-		if (contactLinkedList.empty()) {
-			System.out.println("The List is empty!");
-			return;
-		}
-
-		// Remove the contact from events
-		if (!EventLinkedList.empty()) {
-			EventLinkedList.findfirst();
-			while (!EventLinkedList.last()) {
-				Event event = EventLinkedList.retrieve();
-				if (event.findContact(c, "PhoneNumber") != null) {
-					event.removeContact();
-					if (event.isEmptyContact()) {
-						EventLinkedList.remove();
-					}
-				}
-				EventLinkedList.findnext();
-			}
-
-			if (EventLinkedList.last()) {
-				Event event = EventLinkedList.retrieve();
-				if (event.findContact(c, "PhoneNumber") != null) {
-					event.removeContact();
-					if (event.isEmptyContact()) {
-						EventLinkedList.remove();
-					}
-				}
-			}
-		}
-
-		// Remove the contact from the contact list
-		contactLinkedList.findfirst();
-		while (!contactLinkedList.last()) {
-			Contact contact = contactLinkedList.retrieve();
-			if (contact.getPhoneNumber().equalsIgnoreCase(c)) {
-				contactLinkedList.remove();
-				System.out.println("THE CONTACT HAS BEEN DELETED");
-				return;
-			}
-			contactLinkedList.findnext();
-		}
-
-		if (contactLinkedList.last()) {
-			Contact contact = contactLinkedList.retrieve();
-			if (contact.getPhoneNumber().equalsIgnoreCase(c)) {
-				contactLinkedList.remove();
-				System.out.println("THE CONTACT HAS BEEN DELETED");
-			}
-		} else {
-			System.out.println("The contact not exist!");
-		}
+		System.out.println("Event not founded! ");
 	}
 
 	public void searchByFirstName(String name) {
@@ -312,5 +272,4 @@ public class PhoneBook {
 		Event lastEvent = EventLinkedList.retrieve();
 		lastEvent.printFirstName(name);
 	}
-
 }

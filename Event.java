@@ -43,14 +43,15 @@ public class Event implements Comparable<Event> {
 		this.location = location;
 	}
 
-	public Contact findContact(String data, String type) {
+	public Contact findContactInEvent(String data, String type) {
 		contactLinkedList.findfirst();
 		if (contactLinkedList.empty()) {
 			return null;
 		}
-		boolean last = true;
+		boolean Signal = true;
+		;
 
-		do {
+		while (Signal) {
 			Contact currentContact = contactLinkedList.retrieve();
 			if (currentContact != null) {
 				if (type.equalsIgnoreCase("Name") && currentContact.getContactName().equalsIgnoreCase(data)) {
@@ -66,30 +67,25 @@ public class Event implements Comparable<Event> {
 					return currentContact;
 				}
 			}
-			if (last == false) {
-				return null;
-			}
-
 			if (contactLinkedList.last()) {
-				last = false;
-				return null;
+				Signal = false;
+				break;
 			}
 			contactLinkedList.findnext();
 
-		} while (!contactLinkedList.last() || last == true);
-
+		}
 		return null;
 	}
 
-	public void addContact(Contact a) {
+	public void addContacttoEvent(Contact a) {
 		contactLinkedList.insert(a);
 	}
 
-	public void removeContact() {
+	public void removeContactInEvent() {
 		contactLinkedList.remove();
 	}
 
-	public void contactsNames() {
+	public void printContactsNames() {
 		System.out.println("Contact List: ");
 		int c = 1;
 
@@ -97,17 +93,17 @@ public class Event implements Comparable<Event> {
 			System.out.println("THERE IS NO CONTACTS");
 			return;
 		}
-
 		contactLinkedList.findfirst();
-
-		while (!contactLinkedList.last()) {
-
+		boolean Signal = true;
+		while (Signal) {
 			System.out.println(c++ + " : " + contactLinkedList.retrieve().getContactName());
 
+			if (contactLinkedList.last()) {
+				Signal = false;
+				break;
+			}
 			contactLinkedList.findnext();
 		}
-		if (contactLinkedList.last())
-			System.out.println(c++ + " : " + contactLinkedList.retrieve().getContactName());
 
 	}
 
@@ -120,37 +116,30 @@ public class Event implements Comparable<Event> {
 			return;
 		}
 		boolean printname = true;
-		int c = 1;
 		contactLinkedList.findfirst();
-		while (!contactLinkedList.last()) {
+		boolean Signal = true;
+		while (Signal) {
 			Contact tmp = contactLinkedList.retrieve();
-			if (name.length() <= tmp.getContactName().length() && tmp.getContactName().substring(0, name.length()).equalsIgnoreCase(name)) {
+			if (tmp.getContactName().substring(0, name.length()).equalsIgnoreCase(name)) {
 				if (printname == true) {
-					System.out.println("\nEvent Name: " + getEventTitle());
-					System.out.println("------------------------------\n");
+					System.out.println();
+					System.out.println("Event Name: " + getEventTitle());
+					System.out.println("------------------------------");
 					printname = false;
 				}
-				System.out.println(c++ + " : " + tmp.getContactName());
+				System.out.println();
+				System.out.println(tmp.toString());
+				System.out.println();
 
+			}
+			if (contactLinkedList.last()) {
+				Signal = false;
+				break;
 			}
 			contactLinkedList.findnext();
 		}
-			if (contactLinkedList.last()) {
-				Contact tmp = contactLinkedList.retrieve();
-				if ( name.length() <= tmp.getContactName().length() &&tmp.getContactName().substring(0, name.length()).equalsIgnoreCase(name)) {
-					if (printname == true) {
-						System.out.println("Event name: " + getEventTitle());
-						System.out.println("------------------------------\n");
-						printname = false;
-					}
-					System.out.println(c++ + " : " + tmp.getContactName());
-
-				}
-			}
-			System.out.println();
-		} 
-
-	
+		System.out.println();
+	}
 
 	public int compareTo(Event o) {
 		try {
