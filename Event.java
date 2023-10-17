@@ -1,3 +1,26 @@
+/****************************
+
+CLASS: Event.java
+
+CSC212 Data structures - Project phase I
+
+Fall 2023
+
+EDIT DATE:
+
+17-10-2023
+
+TEAM:
+
+CSC
+
+AUTHORS:
+
+1- Abdulaziz Alkhonefer                            443100675
+2- Abdulrahman Hamad Alaqeel                       443100920           
+3- Fares Essa Alduhailan                           443102276
+
+***********************************/
 public class Event implements Comparable<Event> {
 	private String eventTitle;
 	private String dateAndTime;
