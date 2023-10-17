@@ -1,3 +1,4 @@
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class mainBeta {
@@ -5,56 +6,51 @@ public class mainBeta {
 	private static PhoneBook pb = new PhoneBook();
 
 	public static void main(String[] args) {
-
-		/* sample tests */
-		Contact a1 = new Contact("fares", "0534335052", "f@.com", "RIYADH", "A", "2003");
-		Contact a2 = new Contact("a", "0534335050", "o@.com", "RIYADH", "A", "2003");
-		Contact a3 = new Contact("Abdulaziz-Alkhinifer", "0534331010", "a@.com", "RIYADH", "A", "2003");
-		Contact a4 = new Contact("Abdullah-Alhassan", "051201012", "a2@.com", "RIYADH", "A", "2003");
-		Contact a5 = new Contact("b", "0534332020", "a3@.com", "RIYADH", "A", "2003");
-		pb.addContact(a1);
-		pb.addContact(a2);
-
-		pb.addContact(a3);
-		pb.addContact(a4);
-		pb.addContact(a5);
 		System.out.println("Welcome to the Linked Tree Phonebook!");
 		int choice;
-		do {
-			mainMenu();
-			choice = a.nextInt();
-			switch (choice) {
-				case 1:
-					addContact();
-					break;
-				case 2:
-					searchContact();
-					break;
-				case 3:
-					deleteContact();
-					break;
-				case 4:
-					scheduleEvent();
-					break;
-				case 5:
-					searchEvent();
-					break;
-				case 6:
-					searchByFirstName();
-					break;
-				case 7:
-					pb.PrintEvent();
-					break;
-				case 8:
-					System.out.println("Thank you!");
-					break;
-				default:
-					System.out.println("Wrong input, Please try again. ");
-					break;
-			}
-		} while (choice != 8);
-
+do {
+    mainMenu();
+    
+    try {
+        choice = a.nextInt();
+        
+        switch (choice) {
+            case 1:
+                addContact();
+                break;
+            case 2:
+                searchContact();
+                break;
+            case 3:
+                deleteContact();
+                break;
+            case 4:
+                scheduleEvent();
+                break;
+            case 5:
+                searchEvent();
+                break;
+            case 6:
+                searchByFirstName();
+                break;
+            case 7:
+                pb.PrintEvent();
+                break;
+            case 8:
+                System.out.println("Thank you!");
+                break;
+            default:
+                System.out.println("Wrong input, Please try again. ");
+                break;
+        }
+    } catch (InputMismatchException e) {
+        System.out.println("Invalid input. Please try again.");
+		choice = 0;
+        a.nextLine(); 
+    }
+} while (choice != 8);
 	}
+	
 
 	public static void addContact() {
 		Contact tmp = new Contact();
