@@ -1,123 +1,135 @@
 public class Contact implements Comparable<Contact> {
-	private String contactName;
-	private String phoneNumber;
-	private String emailAddress;
-	private String address;
-	private String birthday;
-	private String notes;
+    private String contactName;
+    private String phoneNumber;
+    private String emailAddress;
+    private String address;
+    private String birthday;
+    private String notes;
+    private LinkedList<String> eventsCalendar;
 
-	public Contact() {
-		contactName = null;
-		phoneNumber = null;
-		emailAddress = null;
-		address = null;
-		birthday = null;
-		notes = null;
+    public Contact() {
+        this.eventsCalendar = new LinkedList<>();
+        this.contactName = null;
+        this.phoneNumber = null;
+        this.emailAddress = null;
+        this.address = null;
+        this.birthday = null;
+        this.notes = null;
+    }
 
-	}
+    public Contact(Contact c) {
+        this.eventsCalendar = c.eventsCalendar;
+        this.contactName = c.contactName;
+        this.phoneNumber = c.phoneNumber;
+        this.emailAddress = c.emailAddress;
+        this.address = c.address;
+        this.birthday = c.birthday;
+        this.notes = c.notes;
+    }
 
-	public Contact(Contact c) {
-		super();
-		this.contactName = c.contactName;
-		this.phoneNumber = c.phoneNumber;
-		this.emailAddress = c.emailAddress;
-		this.address = c.address;
-		this.birthday = c.birthday;
-		this.notes = c.notes;
-	}
+    public Contact(String contactName, String phoneNumber, String emailAddress, String address, String notes, String birthday) {
+        this.eventsCalendar = new LinkedList<>();
+        this.contactName = contactName;
+        this.phoneNumber = phoneNumber;
+        this.emailAddress = emailAddress;
+        this.address = address;
+        this.notes = notes;
+        this.birthday = birthday;
+    }
 
-	public Contact(String contactName, String phoneNumber, String emailAddress, String address, String notes,
-			String birthday) {
+    public String getContactName() {
+        return contactName;
+    }
 
-		this.contactName = contactName;
-		this.phoneNumber = phoneNumber;
-		this.emailAddress = emailAddress;
-		this.address = address;
-		this.notes = notes;
-		this.birthday = birthday;
-	}
+    public void setContactName(String contactName) {
+        this.contactName = contactName;
+    }
 
-	public String getContactName() {
-		return contactName;
-	}
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
 
-	public void setContactName(String contactName) {
-		this.contactName = contactName;
-	}
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
 
-	public String getPhoneNumber() {
-		return phoneNumber;
-	}
+    public String getEmailAddress() {
+        return emailAddress;
+    }
 
-	public void setPhoneNumber(String phoneNumber) {
-		this.phoneNumber = phoneNumber;
-	}
+    public void setEmailAddress(String emailAddress) {
+        this.emailAddress = emailAddress;
+    }
 
-	public String getEmailAddress() {
-		return emailAddress;
-	}
+    public String getAddress() {
+        return address;
+    }
 
-	public void setEmailAddress(String emailAddress) {
-		this.emailAddress = emailAddress;
-	}
+    public void setAddress(String address) {
+        this.address = address;
+    }
 
-	public String getAddress() {
-		return address;
-	}
+    public String getBirthday() {
+        return birthday;
+    }
 
-	public void setAddress(String address) {
-		this.address = address;
-	}
+    public void setBirthday(String birthday) {
+        this.birthday = birthday;
+    }
 
-	public String getBirthday() {
-		return birthday;
-	}
+    public String getNotes() {
+        return notes;
+    }
 
-	public void setBirthday(String birthday) {
-		this.birthday = birthday;
-	}
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
 
-	public String getNotes() {
-		return notes;
-	}
+    public String getType(String type) {
+        if (type.equalsIgnoreCase("Name")) {
+            return getContactName();
+        } else if (type.equalsIgnoreCase("Email")) {
+            return getEmailAddress();
+        } else if (type.equalsIgnoreCase("Address")) {
+            return getAddress();
+        } else if (type.equalsIgnoreCase("PhoneNumber")) {
+            return getPhoneNumber();
+        } else if (type.equalsIgnoreCase("Birthday")) {
+            return getBirthday();
+        }
+        return null;
+    }
 
-	public void setNotes(String notes) {
-		this.notes = notes;
-	}
+    public int compareTo(Contact o) {
+        return this.contactName.compareTo(o.getContactName());
+    }
 
-	public String getType(String Type) {
-		if (Type.equalsIgnoreCase("Name")) {
-			return getContactName();
-		} else if (Type.equalsIgnoreCase("Email")) {
-			return getEmailAddress();
-		} else if (Type.equalsIgnoreCase("Address")) {
-			return getAddress();
-		} else if (Type.equalsIgnoreCase("PhoneNumber")) {
-			return getPhoneNumber();
-		} else if (Type.equalsIgnoreCase("Birthday")) {
+    @Override
+    public String toString() {
+        return "\nName: " + this.contactName +
+                "\nPhone Number: " + this.phoneNumber +
+                "\nEmail Address: " + this.emailAddress +
+                "\nAddress: " + this.address +
+                "\nBirthday: " + this.birthday +
+                "\nNotes: " + this.notes + "\n";
+    }
 
-			return getBirthday();
-		}
-		return null;
-
-	}
-
-	public int compareTo(Contact o) {
-		try {
-			return (this.contactName.compareTo(o.getContactName()));
-
-		} catch (Exception e) {
-			throw new UnsupportedOperationException();
-		}
-	}
-
-	public String toString() {
-		return "\nName: " + this.contactName +
-				"\nPhone Number: " + this.phoneNumber +
-				"\nEmail Address: " + this.emailAddress +
-				"\nAddress: " + this.address +
-				"\nBirthday: " + this.birthday +
-				"\nNotes: " + this.notes + "\n";
-	}
-
+    public void addEventtoCalender(String date) {
+        eventsCalendar.insert(date);
+    }
+    public String getReteriveDate(){
+    	return eventsCalendar.retrieve();
+    }
+    public void findnextDate() {
+    	eventsCalendar.findnext();
+    }
+    public void getfirstDate() {
+    	eventsCalendar.findfirst();
+    }
+    public boolean IsemptyDate() {
+    	return eventsCalendar.empty();
+    }
+    public boolean isLastDate() {
+    	return eventsCalendar.last();
+    }
 }
