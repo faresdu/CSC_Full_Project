@@ -1,4 +1,3 @@
-import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class mainBeta {
@@ -8,69 +7,61 @@ public class mainBeta {
 	public static void main(String[] args) {
 		System.out.println("Welcome to the Linked Tree Phonebook!");
 		int choice;
-do {
-    mainMenu();
-    
-    try {
-        choice = a.nextInt();
-        
-        switch (choice) {
-            case 1:
-                addContact();
-                break;
-            case 2:
-                searchContact();
-                break;
-            case 3:
-                deleteContact();
-                break;
-            case 4:
-                scheduleEvent();
-                break;
-            case 5:
-                searchEvent();
-                break;
-            case 6:
-                searchByFirstName();
-                break;
-            case 7:
-                pb.PrintEvent();
-                break;
-            case 8:
-                System.out.println("Thank you!");
-                break;
-            default:
-                System.out.println("Wrong input, Please try again. ");
-                break;
-        }
-    } catch (InputMismatchException e) {
-        System.out.println("Invalid input. Please try again.");
-		choice = 0;
-        a.nextLine(); 
-    }
-} while (choice != 8);
+		do {
+			mainMenu();
+			choice = a.nextInt();
+			switch (choice) {
+				case 1:
+					addContact();
+					break;
+				case 2:
+					searchContact();
+					break;
+				case 3:
+					deleteContact();
+					break;
+				case 4:
+					scheduleEvent();
+					break;
+				case 5:
+					searchEvent();
+					break;
+				case 6:
+					searchByFirstName();
+					break;
+				case 7:
+					pb.PrintEvent();
+					break;
+				case 8:
+					System.out.println("Thank you!");
+					break;
+				default:
+					System.out.println("Wrong input, Please try again. ");
+					break;
+			}
+		} while (choice != 8);
+
 	}
-	
 
 	public static void addContact() {
 		Contact tmp = new Contact();
 		System.out.print("Enter the contact's name: ");
-		tmp.setContactName(a.next());
+		tmp.setContactName(a.nextLine());
 
 		System.out.print("Enter the contact's phone number: ");
-		tmp.setPhoneNumber(a.next());
+		tmp.setPhoneNumber(a.nextLine());
 
 		System.out.print("Enter the contact's Email address: ");
-		tmp.setEmailAddress(a.next());
+		tmp.setEmailAddress(a.nextLine());
 
 		System.out.print("Enter the contact's birthday: ");
-		tmp.setBirthday(a.next());
+		tmp.setBirthday(a.nextLine());
 
 		System.out.print("Enter the contact's address: ");
-		tmp.setAddress(a.next());
+		tmp.setAddress(a.nextLine());
 
 		System.out.print("Enter any notes for the contact: ");
-		tmp.setNotes(a.next());
+		tmp.setNotes(a.nextLine());
 
 		pb.addContact(tmp);
 	}
@@ -107,21 +98,21 @@ do {
 
 	public static void deleteContact() {
 		System.out.print("Enter the contact's phone number: ");
-		pb.deleteContact(a.next());
+		pb.deleteContact(a.nextLine());
 	}
 
 	public static void scheduleEvent() {
 		Event e1 = new Event();
 		System.out.print("Enter event title: ");
-		e1.setEventTitle(a.next());
+		e1.setEventTitle(a.nextLine());
 
 		System.out.print("Enter contact name: ");
-		Contact tmp = pb.findContact(a.next(), "Name");
+		Contact tmp = pb.findContact(a.nextLine(), "Name");
 
 		System.out.print("Enter event date and time (MM/DD/YYYY HH:MM): ");
-		e1.setDateAndTime(a.next());
+		e1.setDateAndTime(a.nextLine());
 		System.out.print("Enter event location: ");
-		e1.setLocation(a.next());
+		e1.setLocation(a.nextLine());
 
 		pb.scheduleEvent(e1, tmp);
 	}
@@ -134,23 +125,23 @@ do {
 		int a51 = a.nextInt();
 		if (a51 == 1) {
 			System.out.print("Enter the contact name: ");
-			pb.SearchEvent(a.next(), "Name");
+			pb.SearchEvent(a.nextLine(), "Name");
 
 		} else if (a51 == 2) {
 			System.out.print("Enter the event title: ");
-			pb.SearchEvent(a.next(), "Title");
+			pb.SearchEvent(a.nextLine(), "Title");
 
 		}
 	}
 
 	public static void searchByFirstName() {
 		System.out.print("Enter the first name: ");
-		pb.searchByFirstName(a.next());
+		pb.searchByFirstName(a.nextLine());
 	}
 
 	public static void mainMenu() {
 		System.out.println("\n-------------------------");
-		System.out.println("Please choose an option:");
+		System.out.println("Please choose an option(Number only accepted):");
 		System.out.println("1. Add a contact");
 		System.out.println("2. Search for a contact");
 		System.out.println(
