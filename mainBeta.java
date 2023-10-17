@@ -13,8 +13,8 @@ Scanner a = new Scanner(System.in);
 do {
     mainMenu();
     
-    try {
-        choice = a.nextInt();
+    
+        choice = a.nextInt(); // assuming that user will enter integer only
         
         switch (choice) {
             case 1:
@@ -45,11 +45,6 @@ do {
                 System.out.println("Wrong input, Please try again. ");
                 break;
         }
-    } catch (InputMismatchException e) {
-        System.out.println("Invalid input. Please try again.");
-        a.nextLine(); 
-        choice = 0; 
-    }
 } while (choice != 8);
 	}
 	 
@@ -154,7 +149,7 @@ do {
 
 	public static void mainMenu() {
 		System.out.println("\n-------------------------");
-		System.out.println("Please choose an option:");
+		System.out.println("Please choose an option(Number only accepted):");
 		System.out.println("1. Add a contact");
 		System.out.println("2. Search for a contact");
 		System.out.println(
